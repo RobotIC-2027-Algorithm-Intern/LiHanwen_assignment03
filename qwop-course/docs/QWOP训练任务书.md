@@ -35,43 +35,46 @@ B｜自主实现：可以更换算法、观察、按键集合、网络、奖励�
 
 ## 5. 第一次启动
 ### Ubuntu 第一次启动
-建议 Ubuntu 22.04 桌面版、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，再在 starter 文件夹右键“在终端打开”。不要在压缩包浏览窗口里直接运行。
+建议 Ubuntu 22.04 桌面版、Miniconda 或 Anaconda、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，再在 starter 文件夹右键“在终端打开”。不要在压缩包浏览窗口里直接运行。
 
 下面的 sudo 命令会要求输入你自己的 Ubuntu 登录密码，输入时屏幕不显示字符。Google Chrome 请先从其官网安装 Linux .deb 版；安装完成后能在终端运行 google-chrome --version。
 
 ```bash
 sudo apt update
-sudo apt install -y python3-venv python3-pip fonts-noto-cjk
-bash setup_ubuntu.sh
-source .venv/bin/activate
+sudo apt install -y fonts-noto-cjk
+conda create -n qwop-rl python=3.12 pip -y
+conda activate qwop-rl
+python -m pip install --upgrade pip
+python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements.txt
 python course.py --help
 ```
 
-首次安装需要下载 Python 依赖及浏览器驱动。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，先进入 starter，再执行 source .venv/bin/activate。Windows 和 Ubuntu 都可以运行同一套课堂代码；当前完整浏览器训练和录像验证已在 Windows 完成。
+首次安装需要下载 Python 依赖及浏览器驱动。游戏源文件和参考视频已经在包内。上面的命令使用 Conda 创建名为 `qwop-rl` 的独立环境；关闭终端后再次使用时，先进入 starter，再执行 `conda activate qwop-rl`。Windows 和 Ubuntu 都可以运行同一套课堂代码；当前完整浏览器训练和录像验证已在 Windows 完成。
 
-若提示没有 venv，检查上面的 apt 安装是否成功；若没有 Chrome，先安装浏览器。驱动下载失败时，请老师安装与 Chrome 匹配的 chromedriver，并设置 export QWOP_CHROMEDRIVER=/实际路径/chromedriver。不要反复改奖励来解决安装错误。
+如果终端提示没有 `conda` 命令，先安装 Miniconda 或 Anaconda，并按安装器提示初始化当前 shell；Bash 通常执行一次 `conda init bash` 后重新打开终端。若没有 Chrome，先安装浏览器。驱动下载失败时，请老师安装与 Chrome 匹配的 chromedriver，并设置 `export QWOP_CHROMEDRIVER=/实际路径/chromedriver`。不要反复改奖励来解决安装错误。`setup_ubuntu.sh` 是原来的 venv 安装脚本，使用 Conda 时不需要运行它。
 
 ### Windows 第一次启动
-建议 Windows 10/11、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，在文件资源管理器中打开 starter 文件夹，在地址栏输入 `powershell` 后回车，或右键选择“在终端中打开”。不要在压缩包浏览窗口里直接运行。
+建议 Windows 10/11、Miniconda 或 Anaconda、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，在文件资源管理器中打开 starter 文件夹，在地址栏输入 `powershell` 后回车，或右键选择“在终端中打开”。不要在压缩包浏览窗口里直接运行。
 
 在 PowerShell 中执行以下命令：
 
 ```powershell
-py -3.12 --version
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
+conda --version
+conda create -n qwop-rl python=3.12 pip -y
+conda activate qwop-rl
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python course.py --help
 ```
 
-如果电脑没有 `py` 命令，可以把前两条中的 `py -3.12` 改成 `python`；如果 PowerShell 阻止激活脚本，先在当前窗口执行 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`，再重新执行激活命令。使用命令提示符（cmd）时，激活命令改为 `.venv\Scripts\activate.bat`。
+如果 PowerShell 提示没有 `conda` 命令，先安装 Miniconda 或 Anaconda，执行 `conda init powershell` 后关闭并重新打开终端。使用命令提示符（cmd）时，执行 `conda init cmd.exe` 后重新打开窗口。Conda 环境不需要单独运行 `.venv\Scripts\Activate.ps1`。
 
-首次安装需要下载 Python 依赖；首次运行浏览器任务时，Selenium 可能还会下载与 Chrome 匹配的驱动，因此应保持网络连接。通常不需要手动安装 chromedriver；如果自动下载失败，可从老师提供的驱动位置获取匹配版本，并在当前 PowerShell 窗口设置：`$env:QWOP_CHROMEDRIVER = 'C:\path\to\chromedriver.exe'`。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，进入 starter 并执行 `.\.venv\Scripts\Activate.ps1`。
+首次安装需要下载 Python 依赖；首次运行浏览器任务时，Selenium 可能还会下载与 Chrome 匹配的驱动，因此应保持网络连接。通常不需要手动安装 chromedriver；如果自动下载失败，可从老师提供的驱动位置获取匹配版本，并在当前 PowerShell 窗口设置：`$env:QWOP_CHROMEDRIVER = 'C:\path\to\chromedriver.exe'`。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，进入 starter 并执行 `conda activate qwop-rl`。
 
 ## 6. 跑通第一个训练，再做正式实验
 ### `course.py` 功能与用法
-`course.py` 是面向课堂的命令封装，必须在 `starter` 文件夹中、激活 `.venv` 后运行。它会调用底层的 `train.py`、`evaluate.py`、`summarize.py`、`plot.py` 和 `make_video.py`，并自动使用 CPU、浏览器无头模式和课堂默认参数。输出目录必须是尚不存在的新目录，脚本会拒绝覆盖旧实验。
+`course.py` 是面向课堂的命令封装，必须在 `starter` 文件夹中、激活 `qwop-rl` Conda 环境后运行。它会调用底层的 `train.py`、`evaluate.py`、`summarize.py`、`plot.py` 和 `make_video.py`，并自动使用 CPU、浏览器无头模式和课堂默认参数。输出目录必须是尚不存在的新目录，脚本会拒绝覆盖旧实验。
 
 先查看总帮助或某个子命令的参数：
 
@@ -131,7 +134,7 @@ python course.py evaluate --run runs/changed --out runs/changed-eval
 ## 8. 怎样读策略与数据
 训练目录中的 episodes.monitor.csv 和 curves.png 显示训练回合回报、距离等变化。回报上升可能只是更擅长拿奖励，不能单独证明正常行走。不同奖励公式下的总回报通常不能直接横比。
 
-训练默认还会把 Stable-Baselines3 的训练指标写入训练目录的 `tb/`。在 `starter` 且已激活 `.venv` 的终端中启动 TensorBoard：
+训练默认还会把 Stable-Baselines3 的训练指标写入训练目录的 `tb/`。在 `starter` 且已激活 `qwop-rl` Conda 环境的终端中启动 TensorBoard：
 
 ```powershell
 python -m tensorboard.main --logdir runs
