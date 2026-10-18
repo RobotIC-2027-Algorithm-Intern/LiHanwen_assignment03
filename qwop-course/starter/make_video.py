@@ -103,6 +103,14 @@ def main():
     if code:
         raise SystemExit(f'ffmpeg failed: {code}')
     temporary.replace(args.out)
+    removed = 0
+    for path in paths:
+        try:
+            path.unlink()
+            removed += 1
+        except OSError as exc:
+            print(f'Warning: could not remove screenshot {path}: {exc}')
+    print(f'Removed {removed} source screenshots')
     print(args.out)
 
 

@@ -89,7 +89,7 @@ python course.py record --help
 | --- | --- | --- | --- |
 | `train` | 从零训练 PPO，并生成训练曲线 | `--out` 输出目录，`--steps` 训练步数，`--seed` 随机种子，`--reward` 奖励配置 | `model.zip`、`normalize.pkl`、`config.json`、`episodes.monitor.csv`、`tb/`、`curves.png` |
 | `evaluate` | 对已有模型运行多个回合并汇总数据 | `--run` 含 `model.zip` 的训练目录，`--out` 新评估目录，`--episodes` 回合数，`--max-steps` 单回合上限，`--start-jitter` 起始扰动 | `episodes.csv`、`steps.csv`、`summary.json`、`curves.png`、`gait.png` |
-| `record` | 对已有模型录制一段连续回放并生成 MP4 | `--run` 训练目录，`--out` 新录像目录，`--max-steps` 单回合上限 | `final_demo.mp4` 及截图、逐步数据 |
+| `record` | 对已有模型录制一段连续回放并生成 MP4 | `--run` 训练目录，`--out` 新录像目录，`--max-steps` 单回合上限 | `final_demo.mp4`、`steps.csv`、`evaluation.json`；视频生成后删除截图 |
 
 三个子命令的典型关系是：先用 `train` 生成 `runs/baseline/model.zip`，再把同一个训练目录交给 `evaluate` 或 `record`。`evaluate` 和 `record` 都会自动读取训练目录中的 `config.json`、`reward.json` 和 `normalize.pkl`；不要把不同实验的模型、标准化统计和视频混用。需要修改底层 PPO 参数、浏览器模式或更细的评估选项时，可以直接运行对应的 `train.py` 或 `evaluate.py`，并在报告中记录完整命令。
 
@@ -159,7 +159,7 @@ walking_success 是课堂代码的启发式检查，包含距离、姿态和接�
 python course.py record --run runs/changed --out runs/final-video
 ```
 
-最终文件为 runs/final-video/final_demo.mp4。脚本重新载入保存好的模型和标准化统计，实际运行游戏并采集画面，视频显示距离、动作和前三项概率。默认最多 3000 个动作；可用 --max-steps 提高上限，报告中写明。若到上限仍没结束，应称为截断回合。
+最终文件为 runs/final-video/final_demo.mp4。脚本重新载入保存好的模型和标准化统计，实际运行游戏并采集画面，视频显示距离、动作和前三项概率；视频成功生成后，作为中间产物的 PNG 截图会自动删除。默认最多 3000 个动作；可用 --max-steps 提高上限，报告中写明。若到上限仍没结束，应称为截断回合。
 
 提交自己最终策略的一次连续回放，保留起始和结束，不拼接不同回合来伪造成功。可以另加失败或对照片段；如选的是最好的一次，写明选择规则，并同时提交全部评估结果。用其他实现时，可自行录屏，但必须能对应实际模型和实验条件。不要用老师视频、人手控制或直接加载上游旧模型代替自己的训练。
 

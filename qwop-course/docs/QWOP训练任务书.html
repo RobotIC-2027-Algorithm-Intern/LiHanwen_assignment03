@@ -55,7 +55,7 @@ python course.py record --help</code></pre>
 <table><thead><tr><th>子命令</th><th>作用</th><th>常用参数</th><th>主要输出</th></tr></thead><tbody>
 <tr><td>train</td><td>从零训练 PPO，并生成训练曲线</td><td>--out、--steps、--seed、--reward</td><td>model.zip、normalize.pkl、config.json、episodes.monitor.csv、tb/、curves.png</td></tr>
 <tr><td>evaluate</td><td>对已有模型运行多个回合并汇总数据</td><td>--run、--out、--episodes、--max-steps、--start-jitter</td><td>episodes.csv、steps.csv、summary.json、curves.png、gait.png</td></tr>
-<tr><td>record</td><td>对已有模型录制一段连续回放并生成 MP4</td><td>--run、--out、--max-steps</td><td>final_demo.mp4 及截图、逐步数据</td></tr>
+<tr><td>record</td><td>对已有模型录制一段连续回放并生成 MP4</td><td>--run、--out、--max-steps</td><td>final_demo.mp4、steps.csv、evaluation.json；视频生成后删除截图</td></tr>
 </tbody></table>
 <p>三个子命令的典型关系是：先用 train 生成 runs/baseline/model.zip，再把同一个训练目录交给 evaluate 或 record。evaluate 和 record 都会自动读取训练目录中的 config.json、reward.json 和 normalize.pkl；不要把不同实验的模型、标准化统计和视频混用。需要修改底层 PPO 参数、浏览器模式或更细的评估选项时，可以直接运行对应的 train.py 或 evaluate.py，并在报告中记录完整命令。</p>
 <p>先运行一个短训练，只用于检查安装和流程。2048 步不是“保证学会走路”的训练量。所有命令里的输出目录都必须是新名字，脚本会拒绝覆盖旧实验。</p>
@@ -88,7 +88,7 @@ python course.py evaluate --run runs/changed --out runs/changed-eval</code></pre
 <p>至少回答三个问题：①距离和姿态是否同时改善？②是否出现“奖励变高但目标没实现”？③最差回合为什么值得关注？给每个回答附一个视频时刻、CSV 数值或图中位置。对原因使用“假设—证据—进一步验证”的写法，避免仅凭一次摔倒编造原因。</p>
 <h2>9. 录制最后的 demo</h2>
 <pre><code>python course.py record --run runs/changed --out runs/final-video</code></pre>
-<p>最终文件为 runs/final-video/final_demo.mp4。脚本重新载入保存好的模型和标准化统计，实际运行游戏并采集画面，视频显示距离、动作和前三项概率。默认最多 3000 个动作；可用 --max-steps 提高上限，报告中写明。若到上限仍没结束，应称为截断回合。</p>
+<p>最终文件为 runs/final-video/final_demo.mp4。脚本重新载入保存好的模型和标准化统计，实际运行游戏并采集画面，视频显示距离、动作和前三项概率；视频成功生成后，作为中间产物的 PNG 截图会自动删除。默认最多 3000 个动作；可用 --max-steps 提高上限，报告中写明。若到上限仍没结束，应称为截断回合。</p>
 <p>提交自己最终策略的一次连续回放，保留起始和结束，不拼接不同回合来伪造成功。可以另加失败或对照片段；如选的是最好的一次，写明选择规则，并同时提交全部评估结果。用其他实现时，可自行录屏，但必须能对应实际模型和实验条件。不要用老师视频、人手控制或直接加载上游旧模型代替自己的训练。</p>
 <p>若结果仍早早摔倒，单独放一段摔倒录像不足以说明实验。请附训练记录、同条件多回合数据，并提出可检验的原因假设，至少完成一次针对该假设的对照尝试。承认暂时没解决的问题，比没有证据地声称“学会了”更有价值。</p>
 <h2>10. 最终提交什么</h2>
