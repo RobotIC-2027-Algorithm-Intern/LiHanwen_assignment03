@@ -2,7 +2,7 @@
 
 本目录为单独实现，原仓库原样保留在 ../upstream/QWOP-RL。没有将原仓库替换后冒称为原版。
 
-- 依赖：原版 Python 3.7、TensorFlow 1.14、Gym、stable_baselines；课堂版 Python 3.12 为 Ubuntu 目标、PyTorch、Gymnasium、Stable-Baselines3。
+- 依赖：原版 Python 3.7、TensorFlow 1.14、Gym、stable_baselines；课堂版 Python 3.12 支持 Ubuntu 和 Windows，使用 PyTorch、Gymnasium、Stable-Baselines3。
 - 算法：课堂默认 PPO 两层 128 单元策略/价值网络，具体设置由 course.py 传给 train.py。原版提供的历史算法保留在原目录中。
 - 接口：本地 HTTP 提供原游戏；仅在响应中暴露状态对象，读取身体状态并发送按键。快速模式每个策略动作推进固定 3 次原游戏更新；没有更改重力、碰撞和原游戏素材。
 - 观察与动作：身体状态数值观测，躯干相对位置；11 个按键组合，见 qwop_env.py 的 ACTIONS。VecNormalize 标准化统计和模型一起保存。

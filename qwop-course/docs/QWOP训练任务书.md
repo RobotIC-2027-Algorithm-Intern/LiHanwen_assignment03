@@ -1,36 +1,40 @@
 # QWOP 强化学习实验任务书
 
 ## 1. 你要完成什么
-训练一个能控制 Q、W、O、P 按键的 QWOP 策略，录制它训练后的真实游戏 demo，并解释它为什么出现这种行为。你可以使用随包的原始开源仓库、课堂入门代码，或自己修改、编写的实现。最终必须交自己的训练录像；如果修改了策略、奖励或训练过程，要说明改了什么、为什么改、结果怎样。
+训练一个能控制 Q、W、O、P 按键的 QWOP 策略，录制它训练后的真实游戏 demo，并尝试解释它为什么出现这种行为。随包有原始开源仓库、课堂入门代码，你可以自己修改、编写奖励、观测项和训练配置，甚至修改地形以做出更高难度的成果。最终你需要提交自己的训练录像，并编写文档记录你所做的修改，要说明改了什么、为什么改、结果怎样。
 
-本任务不要求复制参考视频中的百米成绩。评价依据是训练是否真实、实验能否复现、证据是否支持你的解释。跪行、站住和后退同样可以成为有价值的研究对象，但要明确它们是否符合你自己设定的目标。
+百米成绩不是本任务的唯一考核标准。更多是要看训练过程，以及在其中展现的归因能力与想象力。倒着跑、跳着跑也是有价值的研究对象，只要你确实是想训这个且训出来了，我就没意见。
 
 ## 2. 先看懂五个词
-**观察**是策略得到的身体位置、角度和速度等信息。**动作**是一次选择的按键组合。**奖励**是训练时告诉算法“这一步得多少分”的数字。**策略**根据当前观察，给每种动作一个概率。**回合**是从重新开始到摔倒、到达终点或达到步数上限的一次尝试。
+**观测 (observation)** 是策略得到的身体位置、角度和速度等信息。**动作 (action)** 是一次选择的按键组合。**奖励 (reward)** 是训练时告诉算法“这一步得多少分”的数字。**策略 (policy)** 根据当前观察，给每种动作一个概率。**回合 (episode)** 是从重新开始到摔倒、到达终点或达到步数上限的一次尝试。
 
 一次循环是：观察身体 → 策略选择按键 → 游戏向前模拟 → 得到新观察和奖励。训练算法用许多这样的尝试更新策略。奖励公式本身不是策略；修改奖励后，必须重新训练才能检验新策略。
 
-入门代码使用 PPO。你暂时可以把它理解为：收集尝试，根据结果小幅调整动作概率，再继续尝试。不需要先会推导 PPO 公式才能完成实验。
+入门代码使用 PPO。你暂时可以把它理解为：收集尝试，根据结果小幅调整动作概率，再继续尝试。完成实验不需要先会推导 PPO 公式。
 
 ## 3. 看参考视频，先提问题
 videos/01-walking-100m.mp4：向前行走到终点。观察双脚怎样轮换支撑。
+
 videos/02-kneeling-full.mp4：跪行完成全程。思考“走得远”和“像人一样走”为什么不是同一个指标。
+
 videos/03-standing-still.mp4：站立不动。思考鼓励存活或保持姿态，会不会让策略放弃前进。
+
 videos/04-backward-stable.mp4：从跑道中段开始，低姿态持续后退。看距离数字怎样变化；这是低姿态后退案例。
+
 videos/05-kneeling-still.mp4：低姿态停留。思考奖励里是否缺少了持续前进的要求。
 
-视频中的“前三项概率”只显示概率最高的三个动作，三者相加不一定等于 100%。概率 80% 不是“有 80% 的可能通关”，而是当前观察下选择这个动作的概率。参考视频不包含老师的策略参数，不能作为你的作业提交。
+视频中的“前三项概率”只显示概率最高的三个动作，三者相加不一定等于 100%。概率 80% 不是“有 80% 的可能通关”，而是当前观察下选择这个动作的概率。
 
 小练习：任选两段视频，写下你看见的行为、你猜测的奖励条件，以及还需要什么数据才能验证猜测。仅凭画面不能确定训练时使用了哪些奖励系数。
 
 ## 4. 选择实现路线
-A｜推荐新手：使用 starter/。这是单独提供的现代课堂实现：Gymnasium + Stable-Baselines3 PPO + PyTorch，浏览器运行原游戏。已经补充 CSV、概率图、步态指标和录像工具。它不是原仓库原封不动的运行方式。
-B｜原仓库路线：使用 upstream/QWOP-RL/。完整保留原作者文件。其 README 使用 Python 3.7、TensorFlow 1.14 和旧版 stable_baselines；适合在老师协助下创建独立旧环境，不能把旧 requirements 安装进 starter 的环境。迁移依赖也算你的实现修改，应记录。
-C｜自主实现：可以更换算法、观察、按键集合、网络、奖励或训练流程，也可以使用其他自己修改的接口。须写清来源、依赖和启动命令，并在真实 QWOP 游戏中运行。若改变重力、碰撞、起始姿态等环境条件，必须说明；成绩只在相同条件下比较。
+A｜推荐新手：使用 starter/。这是单独提供的现代课堂实现：Gymnasium + Stable-Baselines3 PPO + PyTorch，浏览器运行原游戏。已经补充 CSV、概率图、步态指标和录像工具。
 
-原仓库自带公开的历史模型、日志和演示数据，因完整保留原仓库而一并提供；这些不是老师本次训练的模型。使用任何预训练参数必须注明来源和继续训练步数，不能称为从零训练。新手路线默认从零开始，不会载入这些模型。
+B｜自主实现：可以更换算法、观察、按键集合、网络、奖励或训练流程，也可以使用其他自己修改的接口。须写清来源、依赖和启动命令，并在真实 QWOP 游戏中运行。若改变重力、碰撞、起始姿态等环境条件，必须说明；成绩只在相同条件下比较。
 
-## 5. Ubuntu 第一次启动
+
+## 5. 第一次启动
+### Ubuntu 第一次启动
 建议 Ubuntu 22.04 桌面版、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，再在 starter 文件夹右键“在终端打开”。不要在压缩包浏览窗口里直接运行。
 
 下面的 sudo 命令会要求输入你自己的 Ubuntu 登录密码，输入时屏幕不显示字符。Google Chrome 请先从其官网安装 Linux .deb 版；安装完成后能在终端运行 google-chrome --version。
@@ -43,11 +47,49 @@ source .venv/bin/activate
 python course.py --help
 ```
 
-首次安装需要下载 Python 依赖及浏览器驱动。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，先进入 starter，再执行 source .venv/bin/activate。课程脚本按 Ubuntu 设计；当前完整浏览器训练和录像验证在 Windows 完成，Ubuntu 尚需在你的电脑上完成首次运行检查。
+首次安装需要下载 Python 依赖及浏览器驱动。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，先进入 starter，再执行 source .venv/bin/activate。Windows 和 Ubuntu 都可以运行同一套课堂代码；当前完整浏览器训练和录像验证已在 Windows 完成。
 
 若提示没有 venv，检查上面的 apt 安装是否成功；若没有 Chrome，先安装浏览器。驱动下载失败时，请老师安装与 Chrome 匹配的 chromedriver，并设置 export QWOP_CHROMEDRIVER=/实际路径/chromedriver。不要反复改奖励来解决安装错误。
 
+### Windows 第一次启动
+建议 Windows 10/11、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，在文件资源管理器中打开 starter 文件夹，在地址栏输入 `powershell` 后回车，或右键选择“在终端中打开”。不要在压缩包浏览窗口里直接运行。
+
+在 PowerShell 中执行以下命令：
+
+```powershell
+py -3.12 --version
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python course.py --help
+```
+
+如果电脑没有 `py` 命令，可以把前两条中的 `py -3.12` 改成 `python`；如果 PowerShell 阻止激活脚本，先在当前窗口执行 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`，再重新执行激活命令。使用命令提示符（cmd）时，激活命令改为 `.venv\Scripts\activate.bat`。
+
+首次安装需要下载 Python 依赖；首次运行浏览器任务时，Selenium 可能还会下载与 Chrome 匹配的驱动，因此应保持网络连接。通常不需要手动安装 chromedriver；如果自动下载失败，可从老师提供的驱动位置获取匹配版本，并在当前 PowerShell 窗口设置：`$env:QWOP_CHROMEDRIVER = 'C:\path\to\chromedriver.exe'`。游戏源文件和参考视频已经在包内。关闭终端后再次使用时，进入 starter 并执行 `.\.venv\Scripts\Activate.ps1`。
+
 ## 6. 跑通第一个训练，再做正式实验
+### `course.py` 功能与用法
+`course.py` 是面向课堂的命令封装，必须在 `starter` 文件夹中、激活 `.venv` 后运行。它会调用底层的 `train.py`、`evaluate.py`、`summarize.py`、`plot.py` 和 `make_video.py`，并自动使用 CPU、浏览器无头模式和课堂默认参数。输出目录必须是尚不存在的新目录，脚本会拒绝覆盖旧实验。
+
+先查看总帮助或某个子命令的参数：
+
+```powershell
+python course.py --help
+python course.py train --help
+python course.py evaluate --help
+python course.py record --help
+```
+
+| 子命令 | 作用 | 常用参数 | 主要输出 |
+| --- | --- | --- | --- |
+| `train` | 从零训练 PPO，并生成训练曲线 | `--out` 输出目录，`--steps` 训练步数，`--seed` 随机种子，`--reward` 奖励配置 | `model.zip`、`normalize.pkl`、`config.json`、`episodes.monitor.csv`、`tb/`、`curves.png` |
+| `evaluate` | 对已有模型运行多个回合并汇总数据 | `--run` 含 `model.zip` 的训练目录，`--out` 新评估目录，`--episodes` 回合数，`--max-steps` 单回合上限，`--start-jitter` 起始扰动 | `episodes.csv`、`steps.csv`、`summary.json`、`curves.png`、`gait.png` |
+| `record` | 对已有模型录制一段连续回放并生成 MP4 | `--run` 训练目录，`--out` 新录像目录，`--max-steps` 单回合上限 | `final_demo.mp4` 及截图、逐步数据 |
+
+三个子命令的典型关系是：先用 `train` 生成 `runs/baseline/model.zip`，再把同一个训练目录交给 `evaluate` 或 `record`。`evaluate` 和 `record` 都会自动读取训练目录中的 `config.json`、`reward.json` 和 `normalize.pkl`；不要把不同实验的模型、标准化统计和视频混用。需要修改底层 PPO 参数、浏览器模式或更细的评估选项时，可以直接运行对应的 `train.py` 或 `evaluate.py`，并在报告中记录完整命令。
+
 先运行一个短训练，只用于检查安装和流程。2048 步不是“保证学会走路”的训练量。所有命令里的输出目录都必须是新名字，脚本会拒绝覆盖旧实验。
 
 ```bash
@@ -89,11 +131,23 @@ python course.py evaluate --run runs/changed --out runs/changed-eval
 ## 8. 怎样读策略与数据
 训练目录中的 episodes.monitor.csv 和 curves.png 显示训练回合回报、距离等变化。回报上升可能只是更擅长拿奖励，不能单独证明正常行走。不同奖励公式下的总回报通常不能直接横比。
 
+训练默认还会把 Stable-Baselines3 的训练指标写入训练目录的 `tb/`。在 `starter` 且已激活 `.venv` 的终端中启动 TensorBoard：
+
+```powershell
+python -m tensorboard.main --logdir runs
+```
+
+然后在浏览器打开 `http://localhost:6006`。如果只想查看一次实验，可以把日志目录缩小到 `runs/baseline/tb`；如果同时查看多个实验，使用 `runs` 作为根目录，TensorBoard 会按子目录区分不同实验。训练仍在运行时可以保持 TensorBoard 开启，它会周期性读取新日志；训练结束后也可以再启动。
+
+重点查看 `rollout`、`train` 和 `time` 分组中的曲线，例如回合回报、回合长度、策略损失、价值损失和已采样步数。曲线用于发现训练是否在变化、是否提前停滞或出现异常，不等于“学会了走路”的证明；仍要结合 `episodes.csv`、`steps.csv`、`summary.json`、`gait.png` 和实际录像。比较两个实验时，保持奖励配置、训练步数和随机种子等条件一致，并在报告中注明 TensorBoard 日志所在目录。
+
+如果只想生成 CSV 而不写 TensorBoard，可直接运行底层脚本并增加 `--no-tensorboard`；`course.py train` 默认开启 TensorBoard。
+
 评估目录中的 episodes.csv 一行是一个回合；summary.json 汇总距离均值、最小值、最大值和结束原因等。steps.csv 一行是一步动作：keys 是选中的按键，p_qw 等列是完整动作概率，distance 是游戏距离；reward_forward、reward_nonfoot 等列拆开显示奖励来源。
 
 curves.png 还包含第一回合的动作概率热图；gait.png 展示躯干、膝部与接触变化。身体坐标 y 向下增大，因此不能把更大的 y 直接理解成站得更高。nonfoot_fraction 是非脚部触地的动作占比，越高越值得检查是否跪行。support_switches 是脚部支撑变化次数，单独次数高也不能证明步态自然。
 
-walking_success 是课堂代码的启发式检查，包含距离、姿态和接触阈值；它不是游戏官方评分，也不能替代录像判断。reason=limit 表示达到设置的动作数上限，不能直接写成摔倒；game_end 表示游戏结束，要结合距离和画面区分失败与到达终点。
+walking_success 是课堂代码的启发式检查，包含距离、姿态和接触阈值；reason=limit 表示达到设置的动作数上限；game_end 表示游戏结束，要结合距离和画面区分失败与到达终点。
 
 至少回答三个问题：①距离和姿态是否同时改善？②是否出现“奖励变高但目标没实现”？③最差回合为什么值得关注？给每个回答附一个视频时刻、CSV 数值或图中位置。对原因使用“假设—证据—进一步验证”的写法，避免仅凭一次摔倒编造原因。
 

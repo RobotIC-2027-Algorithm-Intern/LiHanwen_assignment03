@@ -4,7 +4,7 @@ QWOP 强化学习课程完整包
 任务书可在浏览器 Ctrl+P 打印或另存为 PDF；Markdown 版可编辑。
 
 upstream/QWOP-RL/：原始仓库快照（原样保留，含原作者公开模型与历史记录）。
-starter/：Ubuntu 新手课堂实现，默认从零训练；安装运行见任务书。
+starter/：支持 Ubuntu 和 Windows 的新手课堂实现，默认从零训练；安装运行见任务书。
 videos/：五段老师参考录像，不包含老师训练好的权重。
 submission_template/：报告模板与实验记录空表。
 
