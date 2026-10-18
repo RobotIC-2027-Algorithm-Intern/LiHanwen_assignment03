@@ -1,7 +1,8 @@
 来源：https://github.com/Wesleyliao/QWOP-RL
-原始快照版本见 SOURCE_MANIFEST.json，upstream/QWOP-RL 未修改。
+原始项目：https://github.com/Wesleyliao/QWOP-RL
+随包游戏文件来自 SOURCE_MANIFEST.json 所列固定提交；本包不包含完整原仓库。
 原仓库根目录未发现 LICENSE。本包不替原作者授予新的许可。
 QWOP 游戏、图像与其他第三方内容权利归各自权利人，保留原文件中的署名。
 starter/LICENSE 的 MIT 仅适用于课堂新增代码，不覆盖原仓库、游戏与参考视频中的第三方素材。
-完整原仓库包含原作者公开的 models、logs、pretrain、tensorboard 与演示图；不是老师此次训练的私有参数。
+本包不包含原仓库的 models、logs、pretrain 或 tensorboard 历史记录。
 本包不包含老师的模型、标准化统计或最优训练配置。参考录像用于观察和讨论。

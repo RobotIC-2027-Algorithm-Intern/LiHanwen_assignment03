@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QWOP 强化学习实验任务书</title><style>body{max-width:900px;margin:40px auto;padding:0 24px;font:17px/1.85 "Microsoft YaHei","Noto Sans CJK SC",sans-serif;color:#182333}h1{font-size:30px}h2{font-size:23px;margin-top:34px}pre{background:#f3f5f7;padding:16px;overflow:auto;font:14px/1.8 monospace}a{color:#075baf}@media print{body{font-size:11pt;margin:0;max-width:none}h2{break-after:avoid}pre{white-space:pre-wrap;break-inside:avoid}@page{size:A4;margin:18mm}}</style><body><h1>QWOP 强化学习实验任务书</h1>
 <h2>1. 你要完成什么</h2>
-<p>训练一个能控制 Q、W、O、P 按键的 QWOP 策略，录制它训练后的真实游戏 demo，并解释它为什么出现这种行为。你可以使用随包的原始开源仓库、课堂入门代码，或自己修改、编写的实现。最终必须交自己的训练录像；如果修改了策略、奖励或训练过程，要说明改了什么、为什么改、结果怎样。</p>
+<p>训练一个能控制 Q、W、O、P 按键的 QWOP 策略，录制它训练后的真实游戏 demo，并解释它为什么出现这种行为。你可以使用随包的课堂入门代码和游戏资源，也可以访问原始开源项目或自己修改、编写实现。最终必须交自己的训练录像；如果修改了策略、奖励或训练过程，要说明改了什么、为什么改、结果怎样。</p>
 <p>本任务不要求复制参考视频中的百米成绩。评价依据是训练是否真实、实验能否复现、证据是否支持你的解释。跪行、站住和后退同样可以成为有价值的研究对象，但要明确它们是否符合你自己设定的目标。</p>
 <h2>2. 先看懂五个词</h2>
 <p>观察是策略得到的身体位置、角度和速度等信息。动作是一次选择的按键组合。奖励是训练时告诉算法“这一步得多少分”的数字。策略根据当前观察，给每种动作一个概率。回合是从重新开始到摔倒、到达终点或达到步数上限的一次尝试。</p>
@@ -16,9 +16,9 @@
 <p>小练习：任选两段视频，写下你看见的行为、你猜测的奖励条件，以及还需要什么数据才能验证猜测。仅凭画面不能确定训练时使用了哪些奖励系数。</p>
 <h2>4. 选择实现路线</h2>
 <p>A｜推荐新手：使用 starter/。这是单独提供的现代课堂实现：Gymnasium + Stable-Baselines3 PPO + PyTorch，浏览器运行原游戏。已经补充 CSV、概率图、步态指标和录像工具。它不是原仓库原封不动的运行方式。</p>
-<p>B｜原仓库路线：使用 upstream/QWOP-RL/。完整保留原作者文件。其 README 使用 Python 3.7、TensorFlow 1.14 和旧版 stable_baselines；适合在老师协助下创建独立旧环境，不能把旧 requirements 安装进 starter 的环境。迁移依赖也算你的实现修改，应记录。</p>
+<p>B｜原仓库路线：访问 <a href=https://github.com/Wesleyliao/QWOP-RL>原始项目</a>。本课程包不包含完整原仓库；其 README 使用 Python 3.7、TensorFlow 1.14 和旧版 stable_baselines。若尝试旧版实现，应在老师协助下创建独立环境，不能把旧 requirements 安装进 starter 的环境。迁移依赖也算你的实现修改，应记录。</p>
 <p>C｜自主实现：可以更换算法、观察、按键集合、网络、奖励或训练流程，也可以使用其他自己修改的接口。须写清来源、依赖和启动命令，并在真实 QWOP 游戏中运行。若改变重力、碰撞、起始姿态等环境条件，必须说明；成绩只在相同条件下比较。</p>
-<p>原仓库自带公开的历史模型、日志和演示数据，因完整保留原仓库而一并提供；这些不是老师本次训练的模型。使用任何预训练参数必须注明来源和继续训练步数，不能称为从零训练。新手路线默认从零开始，不会载入这些模型。</p>
+<p>原始项目的历史模型、日志和演示数据请访问项目链接查看；本课程包不包含这些文件，也不提供老师本次训练的模型。使用任何预训练参数必须注明来源和继续训练步数，不能称为从零训练。starter 默认从零开始训练。</p>
 <h2>5. 第一次启动</h2>
 <h3>Ubuntu 第一次启动</h3>
 <p>建议 Ubuntu 24.04 桌面版、Miniconda 或 Anaconda、Python 3.12、Google Chrome，有网络；不需要显卡。先完整解压 ZIP，再在 starter 文件夹右键“在终端打开”。不要在压缩包浏览窗口里直接运行。</p>
@@ -101,5 +101,5 @@ python course.py evaluate --run runs/changed --out runs/changed-eval</code></pre
 <p>训练过程与复现材料 25 分；修改或未修改的准确说明 20 分；真实且可对应实验的最终录像 20 分；数据分析、对照与局限 30 分；来源标注和文件整理 5 分。距离不作为唯一评分依据，照抄参考视频不能获得训练与分析分。</p>
 <p>课堂建议：第一次课认识概念、看视频、跑通短训练并提出假设；课间完成基线与修改训练；第二次课读数据、做对照、录制 demo 并互相解释。小组可分操作、记录和解释角色，每个人都应能说清“策略如何选择动作”和“奖励为何可能偏离目标”。</p>
 <h2>12. 来源与实现边界</h2>
-<p>原始项目：https://github.com/Wesleyliao/QWOP-RL ，随包固定提交见 SOURCE_MANIFEST.json。upstream/QWOP-RL 保留原文件，包括公开模型和历史资料。其根目录未发现 LICENSE；本包不替原作者授予新的许可，游戏、图像等第三方权利归各自权利人。</p>
+<p>原始项目：<a href=https://github.com/Wesleyliao/QWOP-RL>QWOP-RL</a>，随包游戏资源对应的固定提交与 SHA-256 见 SOURCE_MANIFEST.json。本包不包含完整原仓库；游戏文件位于 game/，starter 默认从该目录加载。原仓库根目录未发现 LICENSE；本包不替原作者授予新的许可，游戏、图像等第三方权利归各自权利人。</p>
 <p>starter 为独立的课堂适配实现，不是仅替换原仓库奖励：改用 Gymnasium/PyTorch/PPO、浏览器本地接口、固定物理更新步长，增加观察标准化、可配置奖励、数据图和录像。接口在本地响应中暴露游戏状态，未修改游戏重力和碰撞规则。详见 starter/ADAPTATION.md；课堂代码自身采用 MIT，不能据此认为原仓库与游戏也采用 MIT。</p></body></html>

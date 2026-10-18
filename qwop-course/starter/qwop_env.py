@@ -17,7 +17,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 
 ACTIONS = ('qw', 'qo', 'qp', 'q', 'wo', 'wp', 'w', 'op', 'o', 'p', '')
-DEFAULT_GAME = Path(os.environ.get('QWOP_GAME_DIR', Path(__file__).resolve().parent.parent / 'upstream/QWOP-RL/game'))
+DEFAULT_GAME = Path(os.environ.get('QWOP_GAME_DIR', Path(__file__).resolve().parent.parent / 'game'))
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -26,7 +26,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
             source = (Path(self.directory) / 'QWOP2.min.js').read_text(encoding='utf-8')
             marker = 'updatestate: function() {'
             if source.count(marker) != 1:
-                self.send_error(500, 'Unsupported upstream game version')
+                self.send_error(500, 'Unsupported game version')
                 return
             source = source.replace(marker, marker + '\nwindow.__qwop = {game:this, snow:m.core.app, core:m.core};', 1)
             data = source.encode('utf-8')
@@ -73,7 +73,7 @@ class QWOPEnv(gym.Env):
                 options.add_argument('--renderer-process-limit=2')
                 options.add_argument('--disable-gpu')
             # The game and all its assets are served locally. Avoid waiting for
-            # unrelated upstream analytics/advertising frames in training runs.
+            # unrelated analytics/advertising frames in training runs.
             options.page_load_strategy = 'eager'
             options.add_argument('--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1')
             options.add_argument('--window-size=1000,800')
