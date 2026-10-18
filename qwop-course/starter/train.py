@@ -80,9 +80,9 @@ def main():
     try:
         if args.resume:
             overrides = {'learning_rate': args.learning_rate, 'ent_coef': args.entropy} if args.learning_rate else {}
-            model = PPO.load(args.resume, env=env, device='cpu', tensorboard_log=tb, **overrides)
+            model = PPO.load(args.resume, env=env, device='auto', tensorboard_log=tb, **overrides)
         else:
-            model = PPO('MlpPolicy', env, device='cpu', seed=args.seed, verbose=1,
+            model = PPO('MlpPolicy', env, device='auto', seed=args.seed, verbose=1,
                         n_steps=args.rollout_steps, batch_size=64, learning_rate=args.learning_rate or 3e-4, ent_coef=args.entropy, gamma=args.gamma,
                         policy_kwargs={'net_arch': dict(pi=[args.net_width]*2, vf=[args.net_width]*2)},
                         tensorboard_log=tb)

@@ -1,3 +1,4 @@
 **/upstream/
 **/__pycache__/
 **/runs/
+**/starter/configs/my_reward.json
