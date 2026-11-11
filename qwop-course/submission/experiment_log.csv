@@ -1,7 +1,7 @@
 experiment,code_version,seed,actual_steps,reward_file,changed_factor,eval_episodes,mean_distance,min_distance,max_distance,video_file,notes
 check-2048,a937568,42,2048,configs/distance_only.json,无（安装/流程检查）,-,-,-,-,starter/runs/check-video/final_demo.mp4,2048 步短检查，表现差属正常
 baseline-32k,a937568,42,32768,configs/distance_only.json,无（课堂起步基线）,10,54.37,1.4,70.4,-,任务书建议的起步预算；训练不足，距离仍在上升
-baseline-131k,a937568,42,131072,configs/distance_only.json,无（同预算基线）,10,106.24,100.8,117.1,-,4 倍预算后收敛为跪行（knee_low 0.989、upright 0.005）；2 回合到 3000 步上限
+baseline-131k,a937568,42,131072,configs/distance_only.json,无（同预算基线）,10,106.24,100.8,117.1,-,4 倍预算后收敛为跪行（knee_low 0.989、upright 0.005）；2 回合在游戏内 120 秒计时处截断（limit）
 gate06-131k,a937568,42,131072,configs/exp1_gate06.json,height_gate 0→0.6,10,100.89,100.3,101.9,starter/videos/gate06-1031-104659/final_demo.mp4,门控单独无效，仍跪行（knee_low 0.962）
 exp2b-131k,a937568,42,131072,configs/exp2b_gate_knee01.json,gate 0.6 + knee_low_penalty 0.1,10,66.36,8.5,101.9,submission/final_demo.mp4,直立性最好（upright 0.791、nonfoot 0.022）；主片
 exp3a-131k,a937568,42,131072,configs/exp3a_knee05.json,gate 0.6 + knee_low_penalty 0.5,10,44.31,13.5,102.4,starter/videos/exp3a-knee05-1031-112623/final_demo.mp4,惩罚过度，前进被抑制
