@@ -1,0 +1,19 @@
+{
+  "episodes": 10,
+  "mean_distance_m": 34.57000000000001,
+  "median_distance_m": 14.75,
+  "min_distance_m": 2.6,
+  "max_distance_m": 100.4,
+  "target_distance_m": 10.0,
+  "target_reached_episodes": 5,
+  "target_reached_fraction": 0.5,
+  "mean_steps": 413.9,
+  "game_end_episodes": 10,
+  "limit_episodes": 0,
+  "note": "Distance threshold measures forward progress, not upright walking; inspect the game images.",
+  "walking_success_episodes": 0,
+  "mean_nonfoot_fraction": 0.01436155123360409,
+  "mean_knee_low_fraction": 0.10245531946439071,
+  "mean_upright_fraction": 0.767983269231566,
+  "mean_support_switches": 34.8
+}
