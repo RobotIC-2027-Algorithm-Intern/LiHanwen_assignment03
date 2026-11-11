@@ -19,6 +19,8 @@ def main():
     t.add_argument('--steps', type=int, default=32768)
     t.add_argument('--seed', type=int, default=42)
     t.add_argument('--reward', type=Path, default=ROOT / 'configs/distance_only.json')
+    t.add_argument('--device', choices=('auto', 'cpu', 'cuda'), default='cpu',
+                   help='计算设备；此任务的 71→128×2 小 MLP 实测 CPU 更快，GPU 约慢 2 倍')
     for command in ('evaluate', 'record'):
         e = sub.add_parser(command)
         e.add_argument('--run', type=Path, required=True, help='含 model.zip 的训练文件夹')
@@ -40,7 +42,7 @@ def main():
             '--reward-config', a.reward.resolve(), '--fast', '--frame-skip', 3,
             '--normalize', '--normalize-reward', '--direct-cdp', '--headless',
             '--rollout-steps', 1024, '--net-width', 128, '--entropy', .02,
-            '--gamma', .995, '--max-steps', 1500)
+            '--gamma', .995, '--max-steps', 1500, '--device', a.device)
         run('plot.py', a.out)
     else:
         model = a.run.resolve() / 'model.zip'

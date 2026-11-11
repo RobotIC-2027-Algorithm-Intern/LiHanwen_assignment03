@@ -1,0 +1,2 @@
+episode,return,distance,steps,reason,nonfoot_fraction,knee_low_fraction,upright_fraction,support_switches,walking_success
+0,876.6376486440381,102.4,839,game_end,0.010727056019070322,0.08224076281287247,0.833134684147795,72,False

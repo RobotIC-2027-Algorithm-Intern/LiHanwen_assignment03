@@ -1,0 +1,21 @@
+{
+  "model": "/home/zhulu/github_clone/Assignment-3-Reinforcement-Learning/qwop-course/starter/runs/exp4-gate09-1031-113636/model.zip",
+  "periodic_policy": null,
+  "out": "/home/zhulu/github_clone/Assignment-3-Reinforcement-Learning/qwop-course/starter/videos/exp4-gate09-1031-113636",
+  "episodes": 1,
+  "seed": 100,
+  "headless": true,
+  "fast": true,
+  "realtime": false,
+  "stats": null,
+  "stochastic": false,
+  "max_steps": 3000,
+  "screenshots": true,
+  "canvas_only": true,
+  "frame_every": 2,
+  "start_jitter": 0,
+  "frame_skip": 3,
+  "direct_cdp": true,
+  "reward_config": "/home/zhulu/github_clone/Assignment-3-Reinforcement-Learning/qwop-course/starter/runs/exp4-gate09-1031-113636/reward.json",
+  "target_distance": 10.0
+}

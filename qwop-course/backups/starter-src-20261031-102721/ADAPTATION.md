@@ -1,0 +1,13 @@
+# 课堂实现相对于原仓库的变化
+
+本目录为单独实现。原始项目链接为 https://github.com/Wesleyliao/QWOP-RL；本包不包含完整原仓库。
+
+- 依赖：原版 Python 3.7、TensorFlow 1.14、Gym、stable_baselines；课堂版 Python 3.12 支持 Ubuntu 和 Windows，使用 PyTorch、Gymnasium、Stable-Baselines3。
+- 算法：课堂默认 PPO 两层 128 单元策略/价值网络，具体设置由 course.py 传给 train.py。
+- 接口：本地 HTTP 提供原游戏；仅在响应中暴露状态对象，读取身体状态并发送按键。快速模式每个策略动作推进固定 3 次原游戏更新；没有更改重力、碰撞和原游戏素材。
+- 观察与动作：身体状态数值观测，躯干相对位置；11 个按键组合，见 qwop_env.py 的 ACTIONS。VecNormalize 标准化统计和模型一起保存。
+- 奖励：新手基线只计算有符号躯干位移；rewards.py 支持姿态、膝部高度、触地、存活等分项，初始 configs/distance_only.json 不启用这些附加项。训练包含姿态课程缩放逻辑；修改相关奖励时，应同时阅读 qwop_env.py 的 pose_curriculum_scale。
+- 记录：新增回合/逐步 CSV、动作概率、奖励分解、步态辅助指标、图表与实际游戏画面 MP4。
+- 游戏资源：完整运行所需游戏文件随包位于 ../game，默认使用该目录，也可通过 QWOP_GAME_DIR 指定其他目录；setup_ubuntu.sh 校验随包游戏版本。游戏资源来自原项目固定提交，来源和哈希见 ../SOURCE_MANIFEST.json。course.py 将常用命令封装为 train/evaluate/record；底层脚本仍可使用。
+
+这份清单是课堂起点的实现说明。学生自己的修改必须另外记录，不应把以上适配当作自己的贡献。Ubuntu 安装脚本尚未在真实 Ubuntu 机器运行验证；已有浏览器端到端训练/录像验证来自 Windows。
