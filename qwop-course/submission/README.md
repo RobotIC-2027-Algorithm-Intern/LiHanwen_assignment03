@@ -34,6 +34,8 @@ submission/
 | `final_demo.mp4` | `runs/exp2b-gate-knee01-1031-110114` / `configs/exp2b_gate_knee01.json` | `model/exp2b-...` | `eval/exp2b-...-*` | seed 42 训练；录像 seed 100、`start_jitter=0`、747 步、`game_end` 自然结束（未截断） |
 | `final_demo_gate06_kneeling.mp4` | `runs/gate06-1031-104659` / `configs/exp1_gate06.json` | `model/gate06-...` | `eval/gate06-...-*` | 同上，1068 步；用于说明"距离满 100 m 但 upright≈0.01" |
 
+录像对应的逐步数据在 `eval/exp2b-demo-steps.csv`、`eval/exp2b-demo-evaluation.json`（对照片同理），可逐帧核对视频里的按键、距离和前三项概率。
+
 另外三个实验（exp3a、exp4 与起步基线）的数据都在 `eval/` 里，视频在仓库 `starter/videos/` 下，报告中有对应说明。
 
 ## 复现
