@@ -20,10 +20,11 @@ submission/
 ├── final_demo_gate06_kneeling.mp4       对照：gate06（只有门控 0.6），100.3 m，跪行
 ├── report.md                            实验报告（目标、设置、修改、对照、demo 对应关系）
 ├── experiment_log.csv                   一行一实验：种子、步数、配置、评估距离、视频
-├── eval/                                5 次评估的 episodes.csv + summary.json
+├── eval/                                各次评估的 episodes.csv + summary.json、录像逐步数据
 ├── train_logs/<实验>/                   训练日志：episodes.monitor.csv、curves.png、
 │                                        config.json、reward.json、packages.txt、tb/
 ├── model/                               model.zip + normalize.pkl（主片与对照片各一份）
+├── figures/                             报告引用的步态图与训练曲线
 └── code/my_code_changes.patch           相对 starter 原始提交的源码与配置改动
 ```
 
