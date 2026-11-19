@@ -91,7 +91,7 @@ def main():
              (args.out / 'episodes.csv').open('w', newline='', encoding='utf-8') as g:
             steps = csv.writer(f)
             episodes = csv.writer(g)
-            reward_names = ['forward', 'posture', 'knee_low', 'nonfoot', 'alive', 'fall', 'finish', 'step_cost']
+            reward_names = ['forward', 'posture', 'knee_low', 'knee_high', 'nonfoot', 'alive', 'fall', 'finish', 'step_cost']
             steps.writerow(['episode', 'step', 'action', 'keys', 'reward', 'distance', 'torso_angle', 'torso_y',
                             'left_knee_y', 'right_knee_y', 'nonfoot_contact', 'left_foot_contact', 'right_foot_contact',
                             'entropy'] + ['reward_' + k for k in reward_names] + ['p_' + (k or 'none') for k in ACTIONS])

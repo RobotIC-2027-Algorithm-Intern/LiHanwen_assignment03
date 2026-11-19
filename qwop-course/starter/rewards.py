@@ -6,6 +6,7 @@ def walking_reward(dx, torso_y, state, config, failed=False, finished=False):
     """dx 为游戏内部位移，y 向下增大。返回总奖励及每项分解。"""
     height = max(0.0, min(1.0, (2.0 - torso_y) / 3.0))
     knee_y = max(state['left_knee_y'], state['right_knee_y'])
+    knee_high_y = min(state['left_knee_y'], state['right_knee_y'])
     pose_scale = state.get('pose_curriculum_scale', 1.0)
     if 'displacement_clip' in config:
         limit = config['displacement_clip']
@@ -16,6 +17,8 @@ def walking_reward(dx, torso_y, state, config, failed=False, finished=False):
         'forward': config['forward_weight'] * dx * (1.0 - config.get('height_gate', 0.9) * (1.0 - height)),
         'posture': -pose_scale * config['posture_weight'] * max(torso_y - config['target_torso_y'], 0.0),
         'knee_low': -pose_scale * config['knee_low_penalty'] * max(knee_y - config['target_knee_y'], 0.0),
+        'knee_high': -pose_scale * config.get('knee_high_penalty', 0.0)
+                     * max(config.get('target_knee_high', 1.0) - knee_high_y, 0.0),
         'nonfoot': -config['nonfoot_contact_penalty'] * state['nonfoot_contact'],
         'alive': config['alive_bonus'] * height,
         'fall': -config['fall_penalty'] if failed else 0.0,
