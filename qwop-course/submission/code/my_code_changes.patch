@@ -124,6 +124,46 @@ index 0000000..62ede57
 +  "fall_penalty": 0.0,
 +  "success_bonus": 0.0
 +}
+diff --git a/qwop-course/starter/configs/exp5_knee_high.json b/qwop-course/starter/configs/exp5_knee_high.json
+new file mode 100644
+index 0000000..f6e051b
+--- /dev/null
++++ b/qwop-course/starter/configs/exp5_knee_high.json
+@@ -0,0 +1,14 @@
++{
++  "forward_weight": 1.0,
++  "height_gate": 0.6,
++  "posture_weight": 0.0,
++  "target_torso_y": -0.5,
++  "knee_low_penalty": 0.1,
++  "target_knee_y": 6.0,
++  "knee_high_penalty": 0.2,
++  "target_knee_high": 1.0,
++  "nonfoot_contact_penalty": 0.0,
++  "alive_bonus": 0.0,
++  "fall_penalty": 0.0,
++  "success_bonus": 0.0
++}
+diff --git a/qwop-course/starter/configs/exp5b_knee_high_strong.json b/qwop-course/starter/configs/exp5b_knee_high_strong.json
+new file mode 100644
+index 0000000..31b89d0
+--- /dev/null
++++ b/qwop-course/starter/configs/exp5b_knee_high_strong.json
+@@ -0,0 +1,14 @@
++{
++  "forward_weight": 1.0,
++  "height_gate": 0.6,
++  "posture_weight": 0.0,
++  "target_torso_y": -0.5,
++  "knee_low_penalty": 0.1,
++  "target_knee_y": 6.0,
++  "knee_high_penalty": 0.8,
++  "target_knee_high": 1.5,
++  "nonfoot_contact_penalty": 0.0,
++  "alive_bonus": 0.0,
++  "fall_penalty": 0.0,
++  "success_bonus": 0.0
++}
 diff --git a/qwop-course/starter/course.py b/qwop-course/starter/course.py
 index bf1c7a0..ef5077d 100644
 --- a/qwop-course/starter/course.py
@@ -146,6 +186,19 @@ index bf1c7a0..ef5077d 100644
          run('plot.py', a.out)
      else:
          model = a.run.resolve() / 'model.zip'
+diff --git a/qwop-course/starter/evaluate.py b/qwop-course/starter/evaluate.py
+index c34b5c5..1bea84a 100644
+--- a/qwop-course/starter/evaluate.py
++++ b/qwop-course/starter/evaluate.py
+@@ -91,7 +91,7 @@ def main():
+              (args.out / 'episodes.csv').open('w', newline='', encoding='utf-8') as g:
+             steps = csv.writer(f)
+             episodes = csv.writer(g)
+-            reward_names = ['forward', 'posture', 'knee_low', 'nonfoot', 'alive', 'fall', 'finish', 'step_cost']
++            reward_names = ['forward', 'posture', 'knee_low', 'knee_high', 'nonfoot', 'alive', 'fall', 'finish', 'step_cost']
+             steps.writerow(['episode', 'step', 'action', 'keys', 'reward', 'distance', 'torso_angle', 'torso_y',
+                             'left_knee_y', 'right_knee_y', 'nonfoot_contact', 'left_foot_contact', 'right_foot_contact',
+                             'entropy'] + ['reward_' + k for k in reward_names] + ['p_' + (k or 'none') for k in ACTIONS])
 diff --git a/qwop-course/starter/requirements.txt b/qwop-course/starter/requirements.txt
 index 6e6be5a..6e2cbf2 100644
 --- a/qwop-course/starter/requirements.txt
@@ -156,6 +209,27 @@ index 6e6be5a..6e2cbf2 100644
  gymnasium==1.2.3
  selenium>=4.25,<5
  tensorboard>=2.17,<3
+diff --git a/qwop-course/starter/rewards.py b/qwop-course/starter/rewards.py
+index fe33b99..b13d341 100644
+--- a/qwop-course/starter/rewards.py
++++ b/qwop-course/starter/rewards.py
+@@ -6,6 +6,7 @@ def walking_reward(dx, torso_y, state, config, failed=False, finished=False):
+     """dx 为游戏内部位移，y 向下增大。返回总奖励及每项分解。"""
+     height = max(0.0, min(1.0, (2.0 - torso_y) / 3.0))
+     knee_y = max(state['left_knee_y'], state['right_knee_y'])
++    knee_high_y = min(state['left_knee_y'], state['right_knee_y'])
+     pose_scale = state.get('pose_curriculum_scale', 1.0)
+     if 'displacement_clip' in config:
+         limit = config['displacement_clip']
+@@ -16,6 +17,8 @@ def walking_reward(dx, torso_y, state, config, failed=False, finished=False):
+         'forward': config['forward_weight'] * dx * (1.0 - config.get('height_gate', 0.9) * (1.0 - height)),
+         'posture': -pose_scale * config['posture_weight'] * max(torso_y - config['target_torso_y'], 0.0),
+         'knee_low': -pose_scale * config['knee_low_penalty'] * max(knee_y - config['target_knee_y'], 0.0),
++        'knee_high': -pose_scale * config.get('knee_high_penalty', 0.0)
++                     * max(config.get('target_knee_high', 1.0) - knee_high_y, 0.0),
+         'nonfoot': -config['nonfoot_contact_penalty'] * state['nonfoot_contact'],
+         'alive': config['alive_bonus'] * height,
+         'fall': -config['fall_penalty'] if failed else 0.0,
 diff --git a/qwop-course/starter/train.py b/qwop-course/starter/train.py
 index 7851a32..b38d979 100644
 --- a/qwop-course/starter/train.py

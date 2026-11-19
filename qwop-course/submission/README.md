@@ -1,7 +1,7 @@
 # 提交说明（QWOP 强化学习作业）
 
 姓名：lihanwen
-日期：2026-11-11
+日期：2026-11-19
 代码提交：`a937568`（starter 原始提交 `bd8bac4`）
 
 ## 三项交付物在哪
@@ -39,6 +39,8 @@ submission/
 
 另外三个实验（exp3a、exp4 与起步基线）的数据都在 `eval/` 里，视频在仓库 `starter/videos/` 下，报告中有对应说明。
 
+11-19 的追加实验（给"膝盖抬得过高"加惩罚）没有录像，只有三点数据：`runs/exp5-kneehigh02-1119-171651`（权重 0.2）、`runs/exp5b-kneehigh08-1119-172348`（权重 0.8）和种子对照 `runs/ctrl-exp2b-seed7-1119-172822`；评估 CSV 在 `eval/`，训练日志在 `train_logs/`，分布对比图在 `figures/exp5-knee-high.png`，结论见报告 4.5 节。
+
 ## 复现
 
 环境（与任务书建议的 `qwop-rl` 不同，见报告"代码来源与训练设置"）：
@@ -63,5 +65,5 @@ python course.py record --run runs/exp2b-gate-knee01-1031-110114 --out videos/ex
 ## 来源与边界
 
 - 路线 A：课堂提供的 `starter/` 实现（Gymnasium + Stable-Baselines3 PPO + PyTorch + 浏览器原游戏），原始项目见 `qwop-course/docs/QWOP训练任务书.md` 第 11 节与 `SOURCE_MANIFEST.json`。
-- 本次实验相对 starter 的改动只有训练脚本的设备/超参开关与 `requirements.txt` 的 torch 版本固定（见 `code/my_code_changes.patch` 与报告"修改清单"）；奖励公式、观测、动作集合、环境物理均**未修改**。
+- 本次实验相对 starter 的改动：训练脚本的设备/超参开关、`requirements.txt` 的 torch 版本固定，以及 11-19 追加实验里新增的一个奖励项 `knee_high`（默认 0，不影响前面所有实验）。观测、动作集合、环境物理均**未修改**（见 `code/my_code_changes.patch` 与报告"修改清单"）。
 - 全部为从零训练，**未使用**老师参考策略、人手控制或上游旧模型；视频为同一模型的一次连续回放。
