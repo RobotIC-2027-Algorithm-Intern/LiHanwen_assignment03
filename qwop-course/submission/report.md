@@ -96,7 +96,9 @@ python course.py record --run runs/exp2b-gate-knee01-1031-110114 --out videos/ex
 
 ### 4.2 假设检验
 
-**H1 成立，但表述要修正。** 32k 的纯位移基线 8 个回合跑到 65~70 m 就被游戏内 120 秒计时截断，`upright` 只有 0.02~0.05；补到 131k 后 10/10 过线、均值 106.24 m，但 `upright=0.005`、`knee_low=0.989`，几乎整段贴地。可见纯位移奖励训练越久越跪，这个方向是对的。
+**H1 成立，但表述要修正。** 32k 的纯位移基线 8 个回合跑到 65~70 m 就被游戏内 120 秒计时截断，`upright` 只有 0.02~0.05；补到 131k 后 10/10 过线、均值 106.24 m，但 `upright=0.005`、`knee_low=0.989`，几乎整段贴地。可见纯位移奖励训练越久越跪，这个方向是对的。下图是 131k 纯位移基线的训练曲线：约第 160 回合后回合距离稳定在 90~100 m 附近（偶有跌到低值是摔倒回合），说明它确实学会了拿满距离奖励——只是用膝盖走。
+
+![131k 纯位移基线训练曲线：距离稳定在 100 m 附近](figures/baseline-131k-curves.png)
 
 但**跪行的优势不是"每步更划算"，而是"不会摔"**：每动作位移上，exp2b 是 0.127 m，反而是 exp2b 走得最快；gate06 只有 0.092 m，`baseline-131k` 只有 0.071 m。真正的原因是纯位移（32k、131k）和只加门控的 gate06 在训练时都会摔，跪行能让 10 个回合全部完整走完（如 gate06 平均 1099.9 步、约 53 秒游戏时间），而直立策略虽然更快，但 10 回合里有 2 次起步就摔。所以正确的说法是：**跪行是纯位移奖励下一个"不会摔的局部最优"**，能稳定拿满全程位移奖励。
 
@@ -257,6 +259,7 @@ python evaluate.py --model runs/gate06-1031-104659/model.zip --out runs/gate06-s
 | 录像对应的逐步数据 | `eval/exp2b-demo-steps.csv`、`eval/gate06-demo-steps.csv` |
 | 训练曲线（回报、距离） | `train_logs/<实验>/curves.png`、`episodes.monitor.csv`、`tb/` |
 | 步态图（躯干、膝部、触地） | `figures/exp2b-gait.png`、`figures/gate06-gait.png`、`figures/exp4-gait.png` |
+| 训练曲线 | `figures/exp2b-curves.png`、`figures/baseline-131k-curves.png` |
 | 训练参数与奖励配置 | `train_logs/<实验>/config.json`、`reward.json` |
 | 环境依赖 | `train_logs/<实验>/packages.txt` |
 | 源码与配置改动 | `code/my_code_changes.patch` |
