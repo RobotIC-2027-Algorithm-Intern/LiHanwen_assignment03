@@ -3,3 +3,7 @@
 **/runs/
 **/starter/configs/my_reward.json
 **/.vscode/
+
+# 本地工作笔记，不属于作业提交材料
+/实验要求清单.md
+/报告写作指南.md

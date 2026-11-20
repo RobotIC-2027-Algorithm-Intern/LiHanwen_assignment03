@@ -164,6 +164,60 @@ index 0000000..31b89d0
 +  "fall_penalty": 0.0,
 +  "success_bonus": 0.0
 +}
+diff --git a/qwop-course/starter/configs/exp6_fall200.json b/qwop-course/starter/configs/exp6_fall200.json
+new file mode 100644
+index 0000000..1041dc8
+--- /dev/null
++++ b/qwop-course/starter/configs/exp6_fall200.json
+@@ -0,0 +1,12 @@
++{
++  "forward_weight": 1.0,
++  "height_gate": 0.6,
++  "posture_weight": 0.0,
++  "target_torso_y": -0.5,
++  "knee_low_penalty": 0.1,
++  "target_knee_y": 6.0,
++  "nonfoot_contact_penalty": 0.0,
++  "alive_bonus": 0.0,
++  "fall_penalty": 200.0,
++  "success_bonus": 0.0
++}
+diff --git a/qwop-course/starter/configs/exp6_fall50.json b/qwop-course/starter/configs/exp6_fall50.json
+new file mode 100644
+index 0000000..06f3f79
+--- /dev/null
++++ b/qwop-course/starter/configs/exp6_fall50.json
+@@ -0,0 +1,12 @@
++{
++  "forward_weight": 1.0,
++  "height_gate": 0.6,
++  "posture_weight": 0.0,
++  "target_torso_y": -0.5,
++  "knee_low_penalty": 0.1,
++  "target_knee_y": 6.0,
++  "nonfoot_contact_penalty": 0.0,
++  "alive_bonus": 0.0,
++  "fall_penalty": 50.0,
++  "success_bonus": 0.0
++}
+diff --git a/qwop-course/starter/configs/exp7_success200.json b/qwop-course/starter/configs/exp7_success200.json
+new file mode 100644
+index 0000000..1c462cd
+--- /dev/null
++++ b/qwop-course/starter/configs/exp7_success200.json
+@@ -0,0 +1,12 @@
++{
++  "forward_weight": 1.0,
++  "height_gate": 0.6,
++  "posture_weight": 0.0,
++  "target_torso_y": -0.5,
++  "knee_low_penalty": 0.1,
++  "target_knee_y": 6.0,
++  "nonfoot_contact_penalty": 0.0,
++  "alive_bonus": 0.0,
++  "fall_penalty": 0.0,
++  "success_bonus": 200.0
++}
 diff --git a/qwop-course/starter/course.py b/qwop-course/starter/course.py
 index bf1c7a0..ef5077d 100644
 --- a/qwop-course/starter/course.py
